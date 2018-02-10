@@ -28,7 +28,7 @@ public class User {
     private Integer integral;
 
     //地区
-    private Integer area;
+    private String area;
 
     @OneToMany(mappedBy = "userInfo")
     private Set<Remark> remarkSet;
@@ -82,11 +82,11 @@ public class User {
         this.integral = integral;
     }
 
-    public Integer getArea() {
+    public String getArea() {
         return area;
     }
 
-    public void setArea(Integer area) {
+    public void setArea(String area) {
         this.area = area;
     }
 
