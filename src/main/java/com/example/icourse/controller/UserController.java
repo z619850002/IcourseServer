@@ -70,6 +70,10 @@ public class UserController {
     {
 
         try {
+            if (userRep.getByStudentNumber(studentNumber)!=null)
+            {
+                return false;
+            }
             User user=new User();
             user.setStudentNumber(studentNumber);
             user.setUserName(userName);
@@ -85,19 +89,19 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "/id" , method = RequestMethod.PUT)
-    public boolean uodateUser(Integer userId , String userName ,String studentNumber , String email , Integer integral , String area , String nickName ,HttpServletResponse response)
+    @RequestMapping(value = "/id" , method = RequestMethod.POST)
+    public boolean uodateUser(String userId , String userName ,String studentNumber , String email , String integral , String area , String nickName ,HttpServletResponse response)
     {
 
         try {
             User user=new User();
-            user.setUserId(userId);
+            user.setUserId(Integer.parseInt(userId));
             user.setStudentNumber(studentNumber);
             user.setUserName(userName);
             user.setArea(area);
             user.setEmail(email);
             user.setNickName(nickName);
-            user.setIntegral(integral);
+            user.setIntegral(Integer.parseInt(integral));
             userRep.save(user);
             return true;
         }

@@ -3,6 +3,7 @@ package com.example.icourse.controller;
 import com.example.icourse.entity.bean.Course;
 import com.example.icourse.entity.bean.Teacher;
 import com.example.icourse.entity.jparep.CourseRepository;
+import com.example.icourse.entity.jparep.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +14,9 @@ public class CourseController {
 
     @Autowired
     private CourseRepository courseRepository;
+
+    @Autowired
+    private TeacherRepository teacherRepository;
 
     //获取所有课程（多个）
     @GetMapping(value = "/courses")
@@ -42,22 +46,43 @@ public class CourseController {
     //新建一个课程                       /courses
     @PostMapping(value="/courses")
     public Course courseAdd(@RequestParam("courseName") String courseName,
-                            @RequestParam("examDifficulty") Integer examDifficulty,
-                            @RequestParam("courseLoad") Integer courseLoad,
-                            @RequestParam("practicability") Integer practicability,
-                            @RequestParam("enjoyment") Integer enjoyment,
-                            @RequestParam("teacherInfo")Teacher teacherId){
-        Course course=new Course();
-        course.setCourseName(courseName);
-        course.setExamDifficulty(examDifficulty);
-        course.setCourseLoad(courseLoad);
-        course.setPracticability(practicability);
-        course.setEnjoyment(enjoyment);
-        course.setTeacherInfo(teacherId);
-
-
-        return courseRepository.save(course);
-
+                            @RequestParam("examDifficulty") String examDifficulty,
+                            @RequestParam("courseLoad") String courseLoad,
+                            @RequestParam("practicability") String practicability,
+                            @RequestParam("enjoyment") String enjoyment,
+                            @RequestParam("teacherInfo")String teacherName){
+        try {
+            Course c=null;
+            try {
+                c = courseRepository.findByTeacherInfo_TeacherNameAndCourseName(teacherName, courseName);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+            if (c!=null)
+            {
+                return null;
+            }
+            Course course = new Course();
+            course.setCourseName(courseName);
+            course.setExamDifficulty(Integer.parseInt(examDifficulty));
+            course.setCourseLoad(Integer.parseInt(courseLoad));
+            course.setPracticability(Integer.parseInt(practicability));
+            course.setEnjoyment(Integer.parseInt(enjoyment));
+            List<Teacher> teacher = teacherRepository.findByTeacherName(teacherName);
+            if (teacher == null) {
+                return null;
+            }
+            course.setTeacherInfo(teacher.get(0));
+            courseRepository.save(course);
+            return course;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 

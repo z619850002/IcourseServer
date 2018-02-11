@@ -3,12 +3,12 @@ spring:
     active: prod
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://120.78.145.26:3306/icourse
+    url: jdbc:mysql://120.78.145.26:3306/icourse2
     username: icourseuser
     password: ztjztj120
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
 server:
   port: 8081

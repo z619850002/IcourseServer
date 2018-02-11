@@ -1,6 +1,8 @@
 package com.example.icourse.entity.bean;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -83,6 +85,7 @@ public class Course {
         this.enjoyment = enjoyment;
     }
 
+    @JsonIgnore
     public Teacher getTeacherInfo() {
         return teacherInfo;
     }

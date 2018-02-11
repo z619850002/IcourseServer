@@ -31,11 +31,20 @@ public class TeacherController {
     //新建一个老师                        /teachers
     @PostMapping(value="/teachers")
     public Teacher teacherAdd(@RequestParam("teacherName") String teacherName,
-                              @RequestParam("score") Integer score){
-        Teacher teacher=new Teacher();
-        teacher.setScore(score);
-        teacher.setTeacherName(teacherName);
-
-        return teacherRepository.save(teacher);
+                              @RequestParam("score") String score){
+        try {
+            if (teacherRepository.findByTeacherName(teacherName) != null) {
+                Teacher teacher = new Teacher();
+                teacher.setScore(Integer.parseInt(score));
+                teacher.setTeacherName(teacherName);
+                return teacherRepository.save(teacher);
+            }
+            return null;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
